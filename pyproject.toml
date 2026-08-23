@@ -1,0 +1,20 @@
+[project]
+name = "local-music"
+version = "0.1.0"
+description = "MacBook Pro M3 18GB 向け 完全ローカル音楽生成アプリ"
+readme = "README.md"
+# MLX は Python 3.14 に未対応のため 3.12 系に固定する。
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "mlx>=0.32.0",
+    "numpy>=1.26",
+    "soundfile>=0.12",
+    "gradio>=5.0",
+    "huggingface-hub>=0.26",
+]
+
+[project.scripts]
+local-music = "backend.cli:main"
+
+[tool.uv]
+package = false

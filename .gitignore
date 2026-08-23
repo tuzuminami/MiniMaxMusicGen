@@ -1,0 +1,18 @@
+.venv/
+/models/
+outputs/
+logs/
+cache/
+__pycache__/
+*.pyc
+.DS_Store
+*.wav
+*.mp3
+*.flac
+.env
+.ruff_cache/
+.pytest_cache/
+
+# 生成物（scripts/make_app.sh で作り直せる。絶対パスを含むため管理しない）
+*.app/
+requirements-lock.txt
