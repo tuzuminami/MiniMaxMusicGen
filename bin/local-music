@@ -1,0 +1,15 @@
+#!/bin/bash
+# 完全ローカル音楽生成 CLI
+# 例: ./bin/local-music doctor
+set -euo pipefail
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$PROJECT_ROOT"
+
+PYTHON="$PROJECT_ROOT/.venv/bin/python"
+if [ ! -x "$PYTHON" ]; then
+  echo "セットアップがまだのようです。先に scripts/setup.sh を実行してください。" >&2
+  exit 1
+fi
+
+exec "$PYTHON" -m backend.cli "$@"
