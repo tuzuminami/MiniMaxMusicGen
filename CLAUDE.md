@@ -69,12 +69,9 @@ UI = Gradio 6.24.0
 
 ### 運用ルール
 
-1. **独立した調査は 1 メッセージで並列起動する**（例: MLX ランタイム調査と量子化モデル調査を同時に）
-2. サブエージェントへの指示は「何を返すか」を明示し、**結論・要点のみ**返させる（ログ・ファイル全文の転記禁止）
-3. 調査結果は必ず `docs/research/*.md` に保存。**同じ調査を二度行わない**。再開時はまずそこを読む
-4. 長時間コマンド（モデル DL、生成テスト）は background 実行し、待ち時間に他の作業を進める
-5. ログ確認は `tail` / `grep` で必要部分のみ。生成ログ全文をコンテキストに載せない
-6. 大きなファイルは部分読み（offset/limit）。編集済みファイルの再読み込み確認はしない
+- サブエージェントへの指示は「何を返すか」を明示し、結論・要点のみ返させる。
+- 調査結果は `docs/research/*.md` に保存し、再開時はまずそこを読む。同じ調査を繰り返さない。
+- 生成テストは 5〜7 分かかる。background で実行し、生成ログは `tail` / `grep` で必要部分だけ読む。
 
 ## 進捗管理（セッション引き継ぎ）
 
@@ -82,24 +79,9 @@ UI = Gradio 6.24.0
 - **Phase 完了ごとに必ず更新**。セッション再開時は `PROGRESS.md` → 必要な `docs/research/` の順に読み、コード全体の再探索をしない
 - 実測値（メモリ・生成時間・成否）は `PROGRESS.md` か `BENCHMARK.md` に残す。会話コンテキストだけに置かない
 
-## Phase 計画（順序厳守）
+## 現在の状態
 
-GUI から先に作らない。**まず Phase 3 で実機生成を証明するまで UI 着手禁止**。
-
-1. 環境調査（pwd / チップ / RAM / ディスク / 既存ツール）
-2. MiniMax Music 3 MLX 実装の比較調査（一次情報のみ。mlx-audio / mlx-community 等）
-3. **最小 CLI 生成成功（ゲート）**
-4. 4/6/8bit 実測評価 → デフォルト決定
-5. Memory Guard
-6. Prompt Builder（ルールベース。LLM API 禁止）
-7. GUI（localhost 限定 Web UI 第一候補、127.0.0.1 のみ。0.0.0.0 禁止）
-8. History / Metadata
-9. Model Manager
-10. 初心者向け起動（start.command 等）
-11. Smoke Test（英語インスト 30 秒 → §30 成功条件）
-12. 日本語 Smoke Test → Offline Smoke Test（HF_HUB_OFFLINE=1）
-13. Benchmark → `BENCHMARK.md`
-14. README（日本語・初心者向け）/ 本ファイル更新
+全 14 Phase は完了し、Smoke Test・Offline Smoke Test・Benchmark を通過している（`PROGRESS.md`）。以降の変更は「完了条件」を回帰基準として扱い、生成経路に触れる変更は実機生成で再確認する。GUI は 127.0.0.1 のみで bind し、0.0.0.0 は使わない。Prompt Builder はルールベースで、LLM API は使わない。
 
 ## 実装原則
 
@@ -128,7 +110,6 @@ MLX 実機生成 / GUI 生成 / 日本語入力 / WAV 保存 / History / Metadat
 Model Manager / Setup / Doctor / オフライン生成 / README / Smoke Test 成功 / Benchmark 作成。
 **実機生成なしで完成扱いしない。README と実装を同期させる。**
 
-## 失敗時の手順
+## 失敗時の判断
 
-エラー確認 → 一次情報（公式 README / Issues）確認 → 原因特定 → 最小修正 → 再実行。
-一度の失敗で「Apple Silicon 非対応」と結論しない。根拠なき回避策の積み増しもしない。
+一度の失敗で「Apple Silicon 非対応」と結論しない。原因は一次情報（公式 README / Issues）で確認し、根拠のない回避策を積み増さない。
